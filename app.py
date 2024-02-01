@@ -50,8 +50,10 @@ def get_bing_search_results(request):
     params = {"q": search_term, "textDecorations": True, "textFormat": "HTML"}
     response = requests.get(search_url, headers=headers, params=params)
     response.raise_for_status()
+    data = response.json()
+    values = data.get('webPages', {}).get('value', [])
 
-    return response.json()
+    return values
 
 
 def generate(data_stream):
@@ -79,18 +81,17 @@ def handle_turn():
             return jsonify({'error': 'Missing prompts in the request body'}), 400
 
         messages = list(map(lambda x: { 'role': x['role'], 'content': x['content'] }, messages))
-        chat_completion = openai.chat.completions.create(
-            model=model_name,
-            messages=messages,
-            functions=functions,
-        )
-
         messages.insert(
             0,
             {
                 "role": "system",
                 "content": prompts
             }
+        )
+        chat_completion = openai.chat.completions.create(
+            model=model_name,
+            messages=messages,
+            functions=functions,
         )
 
         if chat_completion.choices[0].finish_reason == 'function_call':
