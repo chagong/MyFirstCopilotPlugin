@@ -12,7 +12,7 @@ CORS(app)
 openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.azure_endpoint = os.getenv("OPENAI_API_BASE")
 openai.api_type = "azure"
-model_name = os.getenv("OPENAI_MODEL_NAME") 
+model_name = os.getenv("OPENAI_MODEL_NAME")
 
 functions = [
     {
@@ -40,8 +40,9 @@ prompts = """
 - Conclude the answer from snippet text frist in Bing search results.
 """
 
-def get_bing_search_results(request):
-    search_term = request.get("term")
+
+def get_bing_search_results(search_request):
+    search_term = search_request.get("term")
     subscription_key = os.getenv("BING_ACCESS_KEY")
     assert subscription_key
     search_url = 'https://api.bing.microsoft.com/v7.0/search'
@@ -63,24 +64,27 @@ def generate(data_stream):
     finally:
         data_stream.close()
 
+
 @app.route('/oauth/callback')
 def oauth_callback():
     return jsonify({'ok': 'true'}), 200
+
 
 @app.route('/handle-turn', methods=['POST'])
 def handle_turn():
     # Check the content type
     if request.headers['Content-Type'] != 'application/json':
         return jsonify({'error': 'Invalid Content-Type'}), 400
-    
+
     try:
         # Check the request body
         data = request.json
-        messages = data.get('messages') 
+        messages = data.get('messages')
         if messages is None:
             return jsonify({'error': 'Missing prompts in the request body'}), 400
 
-        messages = list(map(lambda x: { 'role': x['role'], 'content': x['content'] }, messages))
+        messages = list(
+            map(lambda x: {'role': x['role'], 'content': x['content']}, messages))
         messages.insert(
             0,
             {
@@ -98,9 +102,10 @@ def handle_turn():
             function_call = chat_completion.choices[0].message.function_call
 
             if function_call.name == 'get_bing_search_results':
-                response = get_bing_search_results(json.loads(function_call.arguments))
+                response = get_bing_search_results(
+                    json.loads(function_call.arguments))
                 print(response)
-        
+
             messages.append(
                 {
                     "role": "function",
@@ -123,7 +128,7 @@ def handle_turn():
                 'object': "chat.completion.chunk",
                 'created': int(datetime.now().timestamp()),
                 'model': model_name,
-                'choices':[
+                'choices': [
                     {
                         'index': 0,
                         'delta': {
@@ -134,6 +139,6 @@ def handle_turn():
                 ]
             }
             return f"data: {json.dumps(chunk_dict)}\n\n"
-        
+
     except Exception as e:
         return jsonify({'error': f'{e}'}), 400
