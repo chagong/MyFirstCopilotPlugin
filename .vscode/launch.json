@@ -11,7 +11,8 @@
             "url": "https://github.com/copilot/",
             "cascadeTerminateToConfigurations": ["Start Python"],
             "internalConsoleOptions": "neverOpen",
-            "postDebugTask": "Terminate All Tasks",
+            "preLaunchTask": "Start local tunnel",
+            "postDebugTask": "Terminate All Tasks"
         },
         {
             "name": "Python: Flask",
@@ -52,6 +53,7 @@
             "program": "${workspaceFolder}/app.py",
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
+            "preLaunchTask": "Install requirements",
             "postDebugTask": "Terminate All Tasks"
         }
     ],
@@ -62,7 +64,6 @@
                 "Launch GitHub.com chat (Edge)",
                 "Start Python"
             ],
-            "preLaunchTask": "Start local tunnel",
             "stopAll": true,
             "presentation": {
                 "group": "1-local",
