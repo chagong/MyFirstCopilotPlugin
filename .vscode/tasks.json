@@ -40,7 +40,42 @@
             "label": "Start local tunnel",
             "type": "shell",
             "command": "devtunnel user login -g; devtunnel host -p 5000 --allow-anonymous",
+            "linux": {
+                "command": "devtunnel user login -g; devtunnel host -p 5000 --allow-anonymous"
+            },
+            "windows": {
+                "command": "devtunnel user login -g; devtunnel host -p 5000 --allow-anonymous"
+            },
             "isBackground": true,
+            "problemMatcher": {
+                "pattern": [
+                    {
+                        "regexp": "^.*$",
+                        "file": 0,
+                        "location": 1,
+                        "message": 2
+                    }
+                ],
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".*",
+                    "endsPattern": "Ready to accept connections for tunnel"
+                }
+            }
+        },
+        {
+            "label": "Terminate All Tasks",
+            "command": "echo ${input:terminate}",
+            "type": "shell",
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "terminate",
+            "type": "command",
+            "command": "workbench.action.tasks.terminate",
+            "args": "terminateAll"
         }
     ]
 }

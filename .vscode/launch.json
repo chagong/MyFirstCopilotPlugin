@@ -5,8 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch GitHub.com chat (Edge)",
+            "type": "msedge",
+            "request": "launch",
+            "url": "https://github.com/copilot/",
+            "cascadeTerminateToConfigurations": ["Start Python"],
+            "internalConsoleOptions": "neverOpen",
+            "postDebugTask": "Terminate All Tasks",
+        },
+        {
             "name": "Python: Flask",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "flask",
             "env": {
@@ -19,8 +28,7 @@
                 "--no-reload"
             ],
             "jinja": true,
-            "justMyCode": true,
-            "preLaunchTask": "Start local tunnel"
+            "justMyCode": true
         },
         {
             "name": "Docker: Python - Flask",
@@ -35,6 +43,30 @@
                     }
                 ],
                 "projectType": "flask"
+            }
+        },
+        {
+            "name": "Start Python",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/app.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "postDebugTask": "Terminate All Tasks"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Debug in GitHub.com chat (Edge)",
+            "configurations": [
+                "Launch GitHub.com chat (Edge)",
+                "Start Python"
+            ],
+            "preLaunchTask": "Start local tunnel",
+            "stopAll": true,
+            "presentation": {
+                "group": "1-local",
+                "order": 1
             }
         }
     ]

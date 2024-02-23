@@ -12,6 +12,7 @@ CORS(app)
 openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.azure_endpoint = os.getenv("OPENAI_API_BASE")
 openai.api_type = "azure"
+openai.api_version = os.getenv("OPENAI_API_VERSION")
 model_name = os.getenv("OPENAI_MODEL_NAME")
 
 functions = [
@@ -142,3 +143,7 @@ def handle_turn():
 
     except Exception as e:
         return jsonify({'error': f'{e}'}), 400
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
