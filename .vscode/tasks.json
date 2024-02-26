@@ -37,11 +37,21 @@
             }
         },
         {
+            "label": "Activate venv",
+            "type": "shell",
+            "windows": {
+                "command": ".\\.venv\\Scripts\\Activate"
+            },
+        },
+        {
             "label": "Install requirements",
             "type": "shell",
             "windows": {
                 "command": ".\\setup_env.cmd"
             },
+            "dependsOn": [
+                "Activate venv"
+            ]
         },
         {
             "label": "Start local tunnel",
