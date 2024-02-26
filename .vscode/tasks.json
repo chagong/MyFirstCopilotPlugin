@@ -44,21 +44,6 @@
             },
         },
         {
-            "label": "Activate venv",
-            "type": "shell",
-            "windows": {
-                "command": ".\\.venv\\Scripts\\Activate"
-            },
-        },
-        {
-            "label": "Setup python environment",
-            "dependsOn": [
-                "Install requirements",
-                "Activate venv"
-            ],
-            "dependsOrder": "sequence"
-        },
-        {
             "label": "Start local tunnel",
             "type": "shell",
             "command": "devtunnel user login -g; devtunnel host -p 5000 --allow-anonymous",
