@@ -53,7 +53,7 @@
             "program": "${workspaceFolder}/app.py",
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
-            "preLaunchTask": "Install requirements",
+            "preLaunchTask": "Setup python environment",
             "postDebugTask": "Terminate All Tasks"
         }
     ],

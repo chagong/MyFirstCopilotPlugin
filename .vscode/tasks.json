@@ -37,6 +37,13 @@
             }
         },
         {
+            "label": "Install requirements",
+            "type": "shell",
+            "windows": {
+                "command": ".\\setup_env.cmd"
+            },
+        },
+        {
             "label": "Activate venv",
             "type": "shell",
             "windows": {
@@ -44,14 +51,12 @@
             },
         },
         {
-            "label": "Install requirements",
-            "type": "shell",
-            "windows": {
-                "command": ".\\setup_env.cmd"
-            },
+            "label": "Setup python environment",
             "dependsOn": [
+                "Install requirements",
                 "Activate venv"
-            ]
+            ],
+            "dependsOrder": "sequence"
         },
         {
             "label": "Start local tunnel",
